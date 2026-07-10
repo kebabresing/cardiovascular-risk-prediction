@@ -10,6 +10,8 @@
 
 *An End-to-End Data Mining and Machine Learning pipeline to predict cardiovascular disease risk using XGBoost, Hyperparameter Tuning, and SHAP Explainability.*
 
+**Author:** Akhmad Zamri Ardani (NIM: 202310370311406)
+
 </div>
 
 <br />
@@ -38,6 +40,7 @@ To accurately classify patients into Healthy (0) or Sick (1) using an **XGBoost 
 ```text
 .
  ┣ dataset/                                  # Directory for the cardiovascular dataset (ignored in git)
+ ┣ image/                                    # Directory for storing visualization images
  ┣ model/                                    # Directory for exported .pkl models (ignored in git)
  ┣ Cardiovascular_Disease_Prediction.ipynb   # Main Jupyter Notebook (End-to-End Code)
  ┣ requirements.txt                          # Python dependencies list
