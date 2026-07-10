@@ -50,3 +50,7 @@ share/python-wheels/
 
 # MacOS
 .DS_Store
+
+# Models
+model/
+*.pkl

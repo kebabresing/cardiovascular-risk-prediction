@@ -1,15 +1,14 @@
 <div align="center">
   
-# Bank Customer Churn Prediction
+# Cardiovascular Disease Prediction
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)
 ![Jupyter Notebook](https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white)
-![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
-![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-1.7.0%2B-blue.svg?style=for-the-badge)
+![SHAP](https://img.shields.io/badge/SHAP-Explainable_AI-red.svg?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-*A comprehensive Data Mining and Machine Learning pipeline to predict customer churn, documented in an academic IEEE format.*
+*An End-to-End Data Mining and Machine Learning pipeline to predict cardiovascular disease risk using XGBoost, Hyperparameter Tuning, and SHAP Explainability.*
 
 </div>
 
@@ -19,103 +18,77 @@
 - [Project Overview](#project-overview)
 - [Repository Structure](#repository-structure)
 - [Methodology](#methodology)
-- [Key Results](#key-results)
+- [Key Features](#key-features)
 - [How to Run](#how-to-run)
-- [Contributing](#contributing)
 - [License](#license)
 
 ---
 
 ## Project Overview
 
-This repository contains a comprehensive **Data Mining and Machine Learning** project focused on predicting bank customer churn. We implemented a complete data pipeline—from Exploratory Data Analysis (EDA) and Preprocessing to Feature Selection (Chi-Square vs PCA) and Model Evaluation.
-
-The project is documented thoroughly, making it ideal for academic or portfolio showcases. 
+This project aims to predict the probability of a patient developing **Cardiovascular Disease** based on their medical history and health indicators. By applying a robust Data Mining approach (based on the CRISP-DM framework), this repository demonstrates industry-standard practices for cleaning medical data, engineering new features, selecting significant variables, and training a highly optimized predictive model.
 
 **Objective:** 
-To accurately predict whether a bank customer will close their account (churn) using **Logistic Regression** and **Decision Tree** algorithms, and to compare the effectiveness of **Chi-Square** feature selection versus **PCA** dimensionality reduction.
+To accurately classify patients into Healthy (0) or Sick (1) using an **XGBoost Classifier** optimized via **RandomizedSearchCV**, and to explain the model's decision-making process using **SHAP (SHapley Additive exPlanations)**.
 
 ---
 
 ## Repository Structure
 
 ```text
-bank-customer-churn-prediction/
- ┣ dataset                     # Directory containing the churn dataset
- ┣ images                      # Visualizations and plots generated from the notebook
- ┣ Customer_Churn.ipynb        # Main Jupyter Notebook containing all code & analysis
- ┣ requirements.txt            # Python dependencies
- ┣ .gitignore                  # Git ignore file
- ┗ README.md                   # Project documentation
+.
+ ┣ dataset/                                  # Directory for the cardiovascular dataset (ignored in git)
+ ┣ model/                                    # Directory for exported .pkl models (ignored in git)
+ ┣ Cardiovascular_Disease_Prediction.ipynb   # Main Jupyter Notebook (End-to-End Code)
+ ┣ requirements.txt                          # Python dependencies list
+ ┣ .gitignore                                # Git ignore configurations
+ ┗ README.md                                 # Project documentation
 ```
 
 ---
 
 ## Methodology
 
-### 1. Data Preprocessing & EDA
-- **Class Imbalance:** Addressed a moderate class imbalance (79.6% non-churn vs 20.4% churn).
-- **Encoding:** Applied Label Encoding for binary categories and One-Hot Encoding for multi-class categories.
-- **Analysis:** Conducted extensive Exploratory Data Analysis (EDA), analyzing the impact of Age, Balance, and Geography on churn rates.
+### 1. Data Preprocessing & Engineering
+- **Medical Filtering:** Removed biologically impossible blood pressure values (systolic/diastolic) to ensure data integrity and domain accuracy.
+- **Feature Engineering:** Calculated **Body Mass Index (BMI)** using height and weight to capture obesity-related risks, a critical factor in cardiology.
+- **Conversion:** Converted age from days to years to facilitate intuitive Exploratory Data Analysis (EDA).
 
-### 2. Feature Engineering
-We explored two different approaches to handle features:
-- **Chi-Square Feature Selection:** Selected 8 statistically significant features (Gender, Age, Balance, NumOfProducts, IsActiveMember, Geography_France, Geography_Germany, Geography_Spain).
-- **PCA (Principal Component Analysis):** Reduced features into 10 Principal Components that explain >90% of the variance.
+### 2. Feature Selection & Dimensionality Reduction
+- **Chi-Square Selection:** Utilized statistical testing to mathematically rank and select the most significant predictors of cardiovascular disease, reducing noise.
+- **PCA (Principal Component Analysis):** Analyzed variance retention across dimensions to understand dataset complexity.
 
-### 3. Modeling
-We evaluated three different configurations to find the optimal predictive model:
-1. `Logistic Regression (Chi-Square)`
-2. `Decision Tree (Chi-Square)`
-3. `Logistic Regression (PCA)`
+### 3. Modeling & Optimization
+- **Algorithm:** **XGBoost Classifier** (State-of-the-Art algorithm for tabular medical data).
+- **Hyperparameter Tuning:** Conducted a comprehensive search over learning rates, max depths, and tree estimators using `RandomizedSearchCV`.
+- **Validation:** Ensured model robustness and mitigated overfitting by implementing strict **5-Fold Cross Validation**.
 
----
-
-## Key Results
-
-The **Decision Tree** model using 8 Chi-Square selected features significantly outperformed Logistic Regression, especially in detecting the minority churn class.
-
-| Model | Accuracy | Precision | Recall | F1-Score |
-|-------|:--------:|:---------:|:------:|:--------:|
-| LR (Chi-Square) | 80.95% | 60.66% | 18.18% | 27.98% |
-| **DT (Chi-Square)** | **85.70%** | **78.95%** | **40.54%** | **53.57%** |
-| LR (PCA) | 80.85% | 59.23% | 18.92% | 28.68% |
-
-> **Insight:** The Decision Tree model successfully identified a much higher proportion of actual churners compared to the baseline Logistic Regression model.
-
-### Confusion Matrix (Decision Tree)
-
-<div align="center">
-  <img src="images/figure_14_cell100.png" alt="Decision Tree Confusion Matrix" width="600"/>
-</div>
+### 4. Explainable AI (XAI)
+- Integrated **SHAP** values to break the "black box" nature of tree-based models. This provides transparent visual evidence of which medical factors (e.g., Blood Pressure, Age, BMI) predominantly influenced the algorithm's prediction for any individual patient.
 
 ---
 
 ## How to Run
 
-Follow these steps to replicate the environment and run the project locally:
-
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/kebabresing/bank-customer-churn-prediction.git
-   cd bank-customer-churn-prediction
+   git clone https://github.com/kebabresing/cardiovascular-risk-prediction.git
+   cd cardiovascular-risk-prediction
    ```
 
-2. **Install dependencies:**
+2. **Install all dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run the Jupyter Notebook:**
+3. **Run the Notebook:**
    ```bash
-   jupyter notebook Customer_Churn.ipynb
+   jupyter notebook Cardiovascular_Disease_Prediction.ipynb
    ```
-> **Note:** The dataset (`churn.csv`) is located inside the `dataset/` directory. If it's not present, you can download it from [Kaggle](https://www.kaggle.com/datasets/mathchi/churn-for-bank-customers) and place it there before running.
+
+> **Note:** Ensure you place your `cardio_train.csv` dataset file inside the `dataset/` directory before running the notebook. The script will automatically generate the `model/` directory upon execution to serialize the trained XGBoost model and standard scaler.
 
 ---
 
-## Contributing
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/kebabresing/bank-customer-churn-prediction/issues).
-
 ## License
-This project is licensed under the **MIT License**.
+This project is for educational and portfolio demonstration purposes. Feel free to use and modify the methodology.
